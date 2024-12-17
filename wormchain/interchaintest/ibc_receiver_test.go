@@ -31,15 +31,15 @@ const CUSTOM_IBC_VERSION string = "ibc-wormhole-v1"
 
 func createChains(t *testing.T, wormchainVersion string, guardians guardians.ValSet) []ibc.Chain {
 	numWormchainVals := len(guardians.Vals)
-	wormchainConfig.Images[0].Version = wormchainVersion
+	WormchainConfig.Images[0].Version = wormchainVersion
 
 	// Create chain factory with wormchain
-	wormchainConfig.ModifyGenesis = ModifyGenesis(votingPeriod, maxDepositPeriod, guardians)
+	WormchainConfig.ModifyGenesis = ModifyGenesis(VotingPeriod, MaxDepositPeriod, guardians)
 
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
 			ChainName:     "wormchain",
-			ChainConfig:   wormchainConfig,
+			ChainConfig:   WormchainConfig,
 			NumValidators: &numWormchainVals,
 			NumFullNodes:  &numFullNodes,
 		},
@@ -338,7 +338,7 @@ func instantiateWormholeIbcContracts(t *testing.T, ctx context.Context,
 	guardians *guardians.ValSet) (helpers.ContractInfoResponse, helpers.ContractInfoResponse) {
 
 	// Instantiate the Wormchain core contract
-	coreInstantiateMsg := helpers.CoreContractInstantiateMsg(t, wormchainConfig, guardians)
+	coreInstantiateMsg := helpers.CoreContractInstantiateMsg(t, WormchainConfig, guardians)
 	wormchainCoreContractInfo := helpers.StoreAndInstantiateWormholeContract(t, ctx, wormchain, "faucet", "./contracts/wormhole_core.wasm", "wormhole_core", coreInstantiateMsg, guardians)
 
 	// Store wormhole-ibc-receiver contract on wormchain
@@ -354,7 +354,7 @@ func instantiateWormholeIbcContracts(t *testing.T, ctx context.Context,
 	require.NotEmpty(t, wormchainReceiverContractInfo.ContractInfo.IbcPortID, "wormchain (wormchain-ibc-receiver) contract port id is nil")
 
 	// Store and instantiate wormhole-ibc contract on osmosis
-	senderInstantiateMsg := helpers.CoreContractInstantiateMsg(t, wormchainConfig, guardians)
+	senderInstantiateMsg := helpers.CoreContractInstantiateMsg(t, WormchainConfig, guardians)
 	senderCodeId, err := remoteChain.StoreContract(ctx, "faucet", "./contracts/wormhole_ibc.wasm")
 	require.NoError(t, err)
 	senderContractAddr, err := remoteChain.InstantiateContract(ctx, "faucet", senderCodeId, senderInstantiateMsg, true)

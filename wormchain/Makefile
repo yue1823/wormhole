@@ -100,6 +100,9 @@ ictest-malformed-payload: rm-testcache
 ictest-slashing-params-update-vaa: rm-testcache
 	cd interchaintest && go test -race -v -run ^TestSlashingParamsUpdateVaa$$ ./...
 
+ictest-ibc-client-update-vaa: rm-testcache
+	cd interchaintest && go test -race -v -run ^TestIBCClientUpdateVaa$$ ./...
+
 ictest-upgrade-failure: rm-testcache
 	cd interchaintest && go test -race -v -run ^TestUpgradeFailure$$ ./...
 
@@ -112,4 +115,4 @@ ictest-wormchain: rm-testcache
 ictest-ibc-receiver: rm-testcache
 	cd interchaintest && go test -race -v -run ^TestIbcReceiver ./...
 
-.PHONY: ictest-cancel-upgrade ictest-malformed-payload ictest-slashing-params-update-vaa ictest-upgrade-failure ictest-upgrade ictest-wormchain ictest-ibc-receiver 
+.PHONY: ictest-cancel-upgrade ictest-malformed-payload ictest-slashing-params-update-vaa ictest-ibc-client-update-vaa ictest-upgrade-failure ictest-upgrade ictest-wormchain ictest-ibc-receiver 

@@ -28,10 +28,10 @@ import (
 var (
 	// pathWormchainGaia   = "wormchain-gaia" // Replace with 2nd cosmos chain supporting wormchain
 	// genesisWalletAmount = int64(10_000_000)
-	votingPeriod     = "10s"
-	maxDepositPeriod = "10s"
+	VotingPeriod     = "10s"
+	MaxDepositPeriod = "10s"
 	coinType         = "118"
-	wormchainConfig  = ibc.ChainConfig{
+	WormchainConfig  = ibc.ChainConfig{
 		Type:    "cosmos",
 		Name:    "wormchain",
 		ChainID: "wormchain-1",
@@ -67,19 +67,19 @@ func wormchainEncoding() *simappparams.EncodingConfig {
 
 func CreateChains(t *testing.T, wormchainVersion string, guardians guardians.ValSet) []ibc.Chain {
 	numWormchainVals := len(guardians.Vals)
-	wormchainConfig.Images[0].Version = wormchainVersion
+	WormchainConfig.Images[0].Version = wormchainVersion
 
 	if wormchainVersion == "local" {
-		wormchainConfig.Images[0].Repository = "wormchain"
+		WormchainConfig.Images[0].Repository = "wormchain"
 	}
 
 	// Create chain factory with wormchain
-	wormchainConfig.ModifyGenesis = ModifyGenesis(votingPeriod, maxDepositPeriod, guardians)
+	WormchainConfig.ModifyGenesis = ModifyGenesis(VotingPeriod, MaxDepositPeriod, guardians)
 
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
 			ChainName:     "wormchain",
-			ChainConfig:   wormchainConfig,
+			ChainConfig:   WormchainConfig,
 			NumValidators: &numWormchainVals,
 			NumFullNodes:  &numFullNodes,
 		},

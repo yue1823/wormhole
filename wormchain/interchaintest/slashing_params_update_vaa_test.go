@@ -121,7 +121,7 @@ func createAndExecuteVaa(ctx context.Context, guardians *guardians.ValSet, wormc
 	}
 	vHex := hex.EncodeToString(vBz)
 
-	_, err = wormchain.GetNode().ExecTx(ctx, "faucet", "wormhole", "execute-governance-vaa", vHex)
+	_, err = wormchain.GetFullNode().ExecTx(ctx, "faucet", "wormhole", "execute-governance-vaa", vHex)
 	if err != nil {
 		return err
 	}

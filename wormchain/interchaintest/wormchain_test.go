@@ -104,7 +104,7 @@ func TestWormchain(t *testing.T) {
 	fmt.Println("Core contract code id: ", coreContractCodeId)
 
 	// Instantiate wormhole core contract
-	coreInstantiateMsg := helpers.CoreContractInstantiateMsg(t, wormchainConfig, guardians)
+	coreInstantiateMsg := helpers.CoreContractInstantiateMsg(t, WormchainConfig, guardians)
 	coreContractAddr := helpers.InstantiateContract(t, ctx, wormchain, "faucet", coreContractCodeId, "wormhole_core", coreInstantiateMsg, guardians)
 	fmt.Println("Core contract address: ", coreContractAddr)
 
@@ -117,7 +117,7 @@ func TestWormchain(t *testing.T) {
 	fmt.Println("Token bridge contract code id: ", tbContractCodeId)
 
 	// Instantiate token bridge contract
-	tbInstantiateMsg := helpers.TbContractInstantiateMsg(t, wormchainConfig, coreContractAddr, wrappedAssetCodeId)
+	tbInstantiateMsg := helpers.TbContractInstantiateMsg(t, WormchainConfig, coreContractAddr, wrappedAssetCodeId)
 	tbContractAddr := helpers.InstantiateContract(t, ctx, wormchain, "faucet", tbContractCodeId, "token_bridge", tbInstantiateMsg, guardians)
 	fmt.Println("Token bridge contract address: ", tbContractAddr)
 
