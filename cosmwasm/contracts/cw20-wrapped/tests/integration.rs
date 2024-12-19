@@ -1,5 +1,5 @@
 use cosmwasm_std::{
-    from_slice,
+    from_json,
     testing::{mock_dependencies, mock_env, mock_info, MockApi, MockQuerier, MockStorage},
     Addr, Api, OwnedDeps, Response, Storage, Uint128,
 };
@@ -19,7 +19,7 @@ static SENDER: &str = "addr3333";
 fn get_wrapped_asset_info<S: Storage>(storage: &S) -> WrappedAssetInfo {
     let key = to_length_prefixed(KEY_WRAPPED_ASSET);
     let data = storage.get(&key).expect("data should exist");
-    from_slice(&data).expect("invalid data")
+    from_json(&data).expect("invalid data")
 }
 
 fn do_init() -> OwnedDeps<MockStorage, MockApi, MockQuerier> {
@@ -104,7 +104,7 @@ fn check_balance(
 fn check_token_details(deps: &OwnedDeps<MockStorage, MockApi, MockQuerier>, supply: Uint128) {
     let query_response = query(deps.as_ref(), mock_env(), QueryMsg::TokenInfo {}).unwrap();
     assert_eq!(
-        from_slice::<TokenInfoResponse>(query_response.as_slice()).unwrap(),
+        from_json::<TokenInfoResponse>(query_response.as_slice()).unwrap(),
         TokenInfoResponse {
             name: "Integers (Wormhole)".into(),
             symbol: "INT".into(),
@@ -126,7 +126,7 @@ fn query_works() {
 
     let query_response = query(deps.as_ref(), mock_env(), QueryMsg::WrappedAssetInfo {}).unwrap();
     assert_eq!(
-        from_slice::<WrappedAssetInfoResponse>(query_response.as_slice()).unwrap(),
+        from_json::<WrappedAssetInfoResponse>(query_response.as_slice()).unwrap(),
         WrappedAssetInfoResponse {
             asset_chain: 1,
             asset_address: vec![1; 32].into(),
