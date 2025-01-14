@@ -99,6 +99,16 @@ for chain in $chain_ids
         forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
             --watch $implementation_address contracts/relayer/wormholeRelayer/WormholeRelayer.sol:WormholeRelayer
 
+    else if test $chain -eq 40
+
+        set sei_testnet_explorer_url "https://seitrace.com/atlantic-2/api/"
+        set sei_testnet_rpc_url "https://seitrace.com/atlantic-2/api/eth-rpc"
+
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $proxy_address contracts/relayer/create2Factory/Create2Factory.sol:SimpleProxy
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $implementation_address contracts/relayer/wormholeRelayer/WormholeRelayer.sol:WormholeRelayer
+
     else if test $chain -eq 43
 
         set snaxchain_explorer_url "https://explorer.snaxchain.io/api?module=contract&action=verify"

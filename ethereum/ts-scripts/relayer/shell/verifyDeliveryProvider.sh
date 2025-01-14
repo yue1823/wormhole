@@ -105,6 +105,17 @@ for chain in $chain_ids
             --watch $setup_address contracts/relayer/deliveryProvider/DeliveryProviderSetup.sol:DeliveryProviderSetup
         forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
             --watch $proxy_address contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol:DeliveryProviderProxy
+    else if test $chain -eq 40
+
+        set sei_testnet_explorer_url "https://seitrace.com/atlantic-2/api/"
+        set sei_testnet_rpc_url "https://seitrace.com/atlantic-2/api/eth-rpc"
+
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+             --watch $implementation_address contracts/relayer/deliveryProvider/DeliveryProviderImplementation.sol:DeliveryProviderImplementation
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $setup_address contracts/relayer/deliveryProvider/DeliveryProviderSetup.sol:DeliveryProviderSetup
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $proxy_address contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol:DeliveryProviderProxy
 
     else if test $chain -eq 44
         set unichain_sepolia_explorer_url "https://unichain-sepolia.blockscout.com/api/"

@@ -71,6 +71,28 @@ for chain in $chain_ids
         forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
             --rpc-url $monad_devnet_rpc_url \
             $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
+    else if test $chain -eq 37
+        set xlayer_explorer_url "https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER"
+
+        forge verify-contract --verifier oklink --verifier-url $xlayer_explorer_url --watch \
+            $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory
+        forge verify-contract --verifier oklink --verifier-url $xlayer_explorer_url --watch \
+            $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
+    else if test $chain -eq 39
+        set berachain_artio_verifier_url "https://api.routescan.io/v2/network/testnet/evm/80084/etherscan"
+
+        forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
+            --watch $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory
+        forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
+            --watch $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
+    else if test $chain -eq 40
+        set sei_testnet_explorer_url "https://seitrace.com/atlantic-2/api/"
+        set sei_testnet_rpc_url "https://seitrace.com/atlantic-2/api/eth-rpc"
+
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory
+        forge verify-contract --verifier blockscout --verifier-url $sei_testnet_explorer_url --rpc-url $sei_testnet_rpc_url \
+            --watch $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
     else if test $chain -eq 44
         set unichain_sepolia_explorer_url "https://unichain-sepolia.blockscout.com/api/"
         set unichain_sepolia_rpc_url "https://unichain-sepolia.blockscout.com/api/eth-rpc"
@@ -91,20 +113,7 @@ for chain in $chain_ids
         forge verify-contract --verifier blockscout --verifier-url $ink_sepolia_explorer_url --watch \
             --rpc-url $ink_sepolia_rpc_url \
             $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
-    else if test $chain -eq 37
-        set xlayer_explorer_url "https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER"
-
-        forge verify-contract --verifier oklink --verifier-url $xlayer_explorer_url --watch \
-            $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory
-        forge verify-contract --verifier oklink --verifier-url $xlayer_explorer_url --watch \
-            $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
-    else if test $chain -eq 39
-        set berachain_artio_verifier_url "https://api.routescan.io/v2/network/testnet/evm/80084/etherscan"
-
-        forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
-            --watch $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory
-        forge verify-contract --verifier custom --verifier-url $berachain_artio_verifier_url \
-            --watch $init_contract_address contracts/relayer/create2Factory/Create2Factory.sol:Init
+    
     else
         forge verify-contract --watch \
             $create2_factory_address contracts/relayer/create2Factory/Create2Factory.sol:Create2Factory

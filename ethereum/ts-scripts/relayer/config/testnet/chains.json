@@ -46,6 +46,13 @@
       "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
     },
     {
+      "description": "SeiEVM",
+      "evmNetworkId": 1328,
+      "chainId": 40,
+      "rpc": "https://evm-rpc-testnet.sei-apis.com",
+      "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
+    },
+    {
       "description": "Unichain Sepolia",
       "evmNetworkId": 1301,
       "chainId": 44,
