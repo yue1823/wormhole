@@ -67,6 +67,13 @@
       "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
     },
     {
+      "description": "Monad Testnet",
+      "evmNetworkId": 10143,
+      "chainId": 48,
+      "rpc": "https://rpc.monad-testnet.category.xyz/rpc/aDAuGmyVXKRYZC3Klefa9rqRgMiSsGQLcTD9KJq7",
+      "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
+    },
+    {
       "description": "Ethereum Sepolia",
       "evmNetworkId": 11155111,
       "chainId": 10002,
@@ -93,13 +100,6 @@
       "chainId": 10005,
       "rpc": "https://sepolia.optimism.io",
       "wormholeAddress": "0x31377888146f3253211EFEf5c676D41ECe7D58Fe"
-    },
-    { 
-      "description": "Monad Devnet",
-      "evmNetworkId": 41454,
-      "chainId": 10008,
-      "rpc": "https://devnet1.monad.xyz/rpc/IqLeQXELOAhGolixSOVzq87hhCK3UeQK3NBwNTTN",
-      "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
     }
   ]
 }

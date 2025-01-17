@@ -46,6 +46,11 @@
       "updatePriceNative": "100000"
     },
     {
+      "chainId": 48,
+      "updatePriceGas": "10000000000",
+      "updatePriceNative": "100000"
+    },
+    {
       "chainId": 10002,
       "updatePriceGas": "30000000000",
       "updatePriceNative": "200000"
@@ -62,11 +67,6 @@
     },
     {
       "chainId": 10005,
-      "updatePriceGas": "30000000000",
-      "updatePriceNative": "200000"
-    },
-    {
-      "chainId": 10008,
       "updatePriceGas": "30000000000",
       "updatePriceNative": "200000"
     }
@@ -109,6 +109,10 @@
       "updateGasOverhead": "350000"
     },
     {
+      "chainId": 48,
+      "updateGasOverhead": "350000"
+    },
+    {
       "chainId": 10002,
       "updateGasOverhead": "350000"
     },
@@ -122,10 +126,6 @@
     },
     {
       "chainId": 10005,
-      "updateGasOverhead": "350000"
-    },
-    {
-      "chainId": 10008,
       "updateGasOverhead": "350000"
     }
   ],
@@ -167,6 +167,10 @@
       "updateMaximumBudget": "2000000000000000000"
     },
     {
+      "chainId": 48,
+      "updateMaximumBudget": "2000000000000000000"
+    },
+    {
       "chainId": 10002,
       "updateMaximumBudget": "2000000000000000000"
     },
@@ -180,10 +184,6 @@
     },
     {
       "chainId": 10005,
-      "updateMaximumBudget": "2000000000000000000"
-    },
-    {
-      "chainId": 10008,
       "updateMaximumBudget": "2000000000000000000"
     }
   ],
@@ -231,6 +231,10 @@
       "rewardAddress": "0x734D539a7efEE15714a2755caa4280e12EF3d7e4"
     },
     {
+      "chainId": 48,
+      "rewardAddress": "0x734D539a7efEE15714a2755caa4280e12EF3d7e4"
+    },
+    {
       "chainId": 10002,
       "rewardAddress": "0x734D539a7efEE15714a2755caa4280e12EF3d7e4"
     },
@@ -244,10 +248,6 @@
     },
     {
       "chainId": 10005,
-      "rewardAddress": "0x734D539a7efEE15714a2755caa4280e12EF3d7e4"
-    },
-    {
-      "chainId": 10008,
       "rewardAddress": "0x734D539a7efEE15714a2755caa4280e12EF3d7e4"
     }
   ],
@@ -333,6 +333,10 @@
       "isSupported": true
     },
     {
+      "chainId": 48,
+      "isSupported": true
+    },
+    {
       "chainId": 10002,
       "isSupported": true
     },
@@ -346,10 +350,6 @@
     },
     {
       "chainId": 10005,
-      "isSupported": true
-    },
-    {
-      "chainId": 10008,
       "isSupported": true
     }
   ],
@@ -435,6 +435,10 @@
       "supportedKeys": ["vaa"]
     },
     {
+      "chainId": 48,
+      "supportedKeys": ["vaa"]
+    },
+    {
       "chainId": 10002,
       "supportedKeys": ["vaa", "cctp"]
     },
@@ -449,10 +453,6 @@
     {
       "chainId": 10005,
       "supportedKeys": ["vaa", "cctp"]
-    },
-    {
-      "chainId": 10008,
-      "supportedKeys": ["vaa"]
     }
   ]
 }
