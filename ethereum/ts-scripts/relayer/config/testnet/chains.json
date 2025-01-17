@@ -70,7 +70,7 @@
       "description": "Monad Testnet",
       "evmNetworkId": 10143,
       "chainId": 48,
-      "rpc": "https://rpc.monad-testnet.category.xyz/rpc/aDAuGmyVXKRYZC3Klefa9rqRgMiSsGQLcTD9KJq7",
+      "rpc": "https://rpc.monad-testnet.category.xyz/rpc/api_key",
       "wormholeAddress": "0xBB73cB66C26740F31d1FabDC6b7A46a038A300dd"
     },
     {
