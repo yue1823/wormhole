@@ -61,6 +61,10 @@
       "address": "0xf11Fe617EED60945cBd867Ec98D81268F3891a18"
     },
     {
+      "chainId": 48,
+      "address": "0xf11Fe617EED60945cBd867Ec98D81268F3891a18"
+    },
+    {
       "chainId": 10002,
       "address": "0xf11Fe617EED60945cBd867Ec98D81268F3891a18"
     },
@@ -74,10 +78,6 @@
     },
     {
       "chainId": 10005,
-      "address": "0xf11Fe617EED60945cBd867Ec98D81268F3891a18"
-    },
-    {
-      "chainId": 10008,
       "address": "0xf11Fe617EED60945cBd867Ec98D81268F3891a18"
     }
   ]

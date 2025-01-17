@@ -23,7 +23,15 @@ if not test -e $contracts_file
     exit 1
 end
 
-set chain_ids (string split \n --no-empty -- (jq '.operatingChains[]' $chains_file))
+set all_chain_ids (string split \n --no-empty -- (jq '.chains[] | .chainId' $chains_file))
+set operating_chain_ids (string split \n --no-empty -- (jq '.operatingChains[]' $chains_file))
+
+# if no operating chain IDs are specified, verify all known chains.
+if test (count $operating_chain_ids) -eq 0
+    set chain_ids $all_chain_ids
+else
+    set chain_ids $operating_chain_ids
+end
 
 for chain in $chain_ids
     # Klaytn, Karura and Acala don't have a verification API yet
@@ -65,19 +73,7 @@ for chain in $chain_ids
         echo "- $implementation_address: DeliveryProviderImplementation.compiler-input.json"
         echo "- $setup_address: DeliveryProviderSetup.compiler-input.json"
         echo "- $proxy_address: DeliveryProviderProxy.compiler-input.json"
-    else if test $chain -eq 10008
-        set monad_devnet_explorer_url "https://brightstar-884.devnet1.monad.xyz/api/"
-        set monad_devnet_rpc_url "https://brightstar-884.devnet1.monad.xyz/api/eth-rpc"
-
-        forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
-            --rpc-url $monad_devnet_rpc_url \
-            $implementation_address contracts/relayer/deliveryProvider/DeliveryProviderImplementation.sol:DeliveryProviderImplementation
-        forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
-            --rpc-url $monad_devnet_rpc_url \
-            $setup_address contracts/relayer/deliveryProvider/DeliveryProviderSetup.sol:DeliveryProviderSetup
-         forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
-            --rpc-url $monad_devnet_rpc_url \
-            $proxy_address contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol:DeliveryProviderProxy
+   
     else if test $chain -eq 35
         set mantle_explorer_url "https://explorer.mantle.xyz/api?module=contract&action=verify"
 
@@ -142,6 +138,19 @@ for chain in $chain_ids
             $setup_address contracts/relayer/deliveryProvider/DeliveryProviderSetup.sol:DeliveryProviderSetup
          forge verify-contract --verifier blockscout --verifier-url $ink_sepolia_explorer_url --watch \
             --rpc-url $ink_sepolia_rpc_url \
+            $proxy_address contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol:DeliveryProviderProxy
+     else if test $chain -eq 48
+        set monad_devnet_explorer_url "https://explorer.monad-testnet.category.xyz/api/"
+        set monad_devnet_rpc_url "https://explorer.monad-testnet.category.xyz/api/eth-rpc"
+
+        forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
+            --rpc-url $monad_devnet_rpc_url \
+            $implementation_address contracts/relayer/deliveryProvider/DeliveryProviderImplementation.sol:DeliveryProviderImplementation
+        forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
+            --rpc-url $monad_devnet_rpc_url \
+            $setup_address contracts/relayer/deliveryProvider/DeliveryProviderSetup.sol:DeliveryProviderSetup
+         forge verify-contract --verifier blockscout --verifier-url $monad_devnet_explorer_url --watch \
+            --rpc-url $monad_devnet_rpc_url \
             $proxy_address contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol:DeliveryProviderProxy
     else
         forge verify-contract --watch \
