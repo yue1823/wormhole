@@ -19,6 +19,20 @@ var knownDevnetTokenbridgeEmitters = map[vaa.ChainID]string{
 	vaa.ChainIDSui:       "8c6ba6a65f1b9c7fba4c5ad710086ace208e9ac21786a923425efc8167a419f0",
 }
 
+// TODO: Both of these addresses are wrong! Need to update these!
+// Occassionally we might need to know about the core contract addresses, for features like Transfer Verification
+var KnownDevnetCoreContracts = buildEmitterMap(knownCoreContracts)
+var knownDevnetCoreContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "f47329f4344f3bf0f8e436e2f7b485466cff300f12a166563995d3888c296a94",
+}
+
+// Occassionally we might need to know about the token bridge contract addresses, for features like Transfer Verification
+// This could be different from the emitter address on non-EVM chains like Sui
+var KnownDevnetTokenbridgeContracts = buildEmitterMap(knownTokenbridgeContracts)
+var knownDevnetTokenbridgeContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "562760fc51d90d4ae1835bac3e91e0e6987d3497b06f066941d3e51f6e8d76d0",
+}
+
 // KnownDevnetNFTBridgeEmitters is a map of known NFT emitters used during development.
 var KnownDevnetNFTBridgeEmitters = buildEmitterMap(knownDevnetNFTBridgeEmitters)
 var knownDevnetNFTBridgeEmitters = map[vaa.ChainID]string{

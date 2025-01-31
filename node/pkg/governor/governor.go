@@ -477,6 +477,29 @@ func (gov *ChainGovernor) ProcessMsgForTime(msg *common.MessagePublication, now 
 		return true, nil
 	}
 
+	// Check if a message publication already has a delay flag set. If it does, queue early
+	if msg.DelayReason != common.NoDelay {
+		releaseTime := now.Add(maxEnqueuedTime)
+		dbData := db.PendingTransfer{ReleaseTime: releaseTime, Msg: *msg}
+		err = gov.db.StorePendingMsg(&dbData)
+		if err != nil {
+			gov.logger.Error("failed to store pending vaa",
+				zap.String("msgID", msg.MessageIDString()),
+				zap.String("hash", hash),
+				zap.String("txID", msg.TxIDString()),
+				zap.Error(err),
+			)
+			return false, err
+		}
+
+		emitterChainEntry.pending = append(
+			emitterChainEntry.pending,
+			&pendingEntry{token: token, amount: payload.Amount, hash: hash, dbData: dbData},
+		)
+		gov.msgsSeen[hash] = transferEnqueued
+		return false, nil
+	}
+
 	// Get all outgoing transfers for `emitterChainEntry` that happened within the last 24 hours
 	startTime := now.Add(-time.Minute * time.Duration(gov.dayLengthInMinutes))
 	prevTotalValue, err := gov.TrimAndSumValueForChain(emitterChainEntry, startTime)

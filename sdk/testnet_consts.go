@@ -54,6 +54,19 @@ var knownTestnetTokenbridgeEmitters = map[vaa.ChainID]string{
 	vaa.ChainIDWormchain:       "ef5251ea1e99ae48732800ccc7b83b57881232a73eb796b63b1d86ed2ea44e27",
 }
 
+// Occassionally we might need to know about the core contract addresses, for features like Transfer Verification
+var KnownTestnetCoreContracts = buildEmitterMap(knownCoreContracts)
+var knownTestnetCoreContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "f47329f4344f3bf0f8e436e2f7b485466cff300f12a166563995d3888c296a94",
+}
+
+// Occassionally we might need to know about the token bridge contract addresses, for features like Transfer Verification
+// This could be different from the emitter address on non-EVM chains like Sui
+var KnownTestnetTokenbridgeContracts = buildEmitterMap(knownTokenbridgeContracts)
+var knownTestnetTokenbridgeContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "562760fc51d90d4ae1835bac3e91e0e6987d3497b06f066941d3e51f6e8d76d0",
+}
+
 // KnownTestnetNFTBridgeEmitters is a map  of known NFT emitters on the various L1 testnets.
 var KnownTestnetNFTBridgeEmitters = buildEmitterMap(knownTestnetNFTBridgeEmitters)
 var knownTestnetNFTBridgeEmitters = map[vaa.ChainID]string{

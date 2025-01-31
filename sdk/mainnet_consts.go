@@ -128,6 +128,19 @@ var knownTokenbridgeEmitters = map[vaa.ChainID]string{
 	vaa.ChainIDWorldchain: "000000000000000000000000c309275443519adca74c9136b02A38eF96E3a1f6",
 }
 
+// Occassionally we might need to know about the core contract addresses, for features like Transfer Verification
+var KnownCoreContracts = buildEmitterMap(knownCoreContracts)
+var knownCoreContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a",
+}
+
+// Occassionally we might need to know about the token bridge contract addresses, for features like Transfer Verification
+// This could be different from the emitter address on non-EVM chains like Sui
+var KnownTokenbridgeContracts = buildEmitterMap(knownTokenbridgeContracts)
+var knownTokenbridgeContracts = map[vaa.ChainID]string{
+	vaa.ChainIDSui: "26efee2b51c911237888e5dc6702868abca3c7ac12c53f76ef8eba0697695e3d",
+}
+
 // KnownNFTBridgeEmitters is a list of well-known mainnet emitters for the NFT bridge.
 var KnownNFTBridgeEmitters = buildEmitterMap(knownNFTBridgeEmitters)
 var knownNFTBridgeEmitters = map[vaa.ChainID]string{

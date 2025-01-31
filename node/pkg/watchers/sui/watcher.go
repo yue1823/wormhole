@@ -17,12 +17,14 @@ import (
 	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
 	"github.com/certusone/wormhole/node/pkg/readiness"
 	"github.com/certusone/wormhole/node/pkg/supervisor"
+	"github.com/certusone/wormhole/node/pkg/txverifier"
 
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
 	"github.com/mr-tron/base58"
+	"github.com/wormhole-foundation/wormhole/sdk"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 )
@@ -44,6 +46,10 @@ type (
 		loopDelay                 time.Duration
 		queryEventsCmd            string
 		postTimeout               time.Duration
+		// Whether the Transfer Verifier should be initialized for this watcher.
+		txVerifierEnabled bool
+		// Transfer Verifier instance
+		txVerifier *txverifier.SuiTransferVerifier
 	}
 
 	SuiEventResponse struct {
@@ -61,8 +67,9 @@ type (
 	}
 
 	SuiResultInfo struct {
-		result     SuiResult
-		checkpoint int64
+		result      SuiResult
+		checkpoint  int64
+		shouldDelay bool
 	}
 
 	FieldsData struct {
@@ -174,9 +181,24 @@ func NewWatcher(
 	unsafeDevMode bool,
 	messageEvents chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
+	txVerifierEnabled bool,
 ) *Watcher {
 	maxBatchSize := 10
 	descOrder := true
+	var coreBridgeAddress string
+	var tokenBridgeEmitter string
+	var tokenBridgeAddress string
+
+	if unsafeDevMode {
+		coreBridgeAddress = "0x" + string(sdk.KnownDevnetCoreContracts[vaa.ChainIDSui])
+		tokenBridgeEmitter = "0x" + string(sdk.KnownDevnetTokenbridgeEmitters[vaa.ChainIDSui])
+		tokenBridgeAddress = "0x" + string(sdk.KnownDevnetTokenbridgeContracts[vaa.ChainIDSui])
+	} else {
+		coreBridgeAddress = "0x" + string(sdk.KnownCoreContracts[vaa.ChainIDSui])
+		tokenBridgeEmitter = "0x" + string(sdk.KnownTokenbridgeEmitters[vaa.ChainIDSui])
+		tokenBridgeAddress = "0x" + string(sdk.KnownTokenbridgeContracts[vaa.ChainIDSui])
+	}
+
 	return &Watcher{
 		suiRPC:                    suiRPC,
 		suiMoveEventType:          suiMoveEventType,
@@ -190,11 +212,13 @@ func NewWatcher(
 		loopDelay:                 time.Second, // SUI produces a checkpoint every ~3 seconds
 		queryEventsCmd: fmt.Sprintf(`{"jsonrpc":"2.0", "id": 1, "method": "suix_queryEvents", "params": [{ "MoveEventType": "%s" }, null, %d, %t]}`,
 			suiMoveEventType, maxBatchSize, descOrder),
-		postTimeout: time.Second * 5,
+		postTimeout:       time.Second * 5,
+		txVerifierEnabled: txVerifierEnabled,
+		txVerifier:        txverifier.NewSuiTransferVerifier(coreBridgeAddress, tokenBridgeEmitter, tokenBridgeAddress),
 	}
 }
 
-func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult, isReobservation bool) error {
+func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult, shouldDelay bool, isReobservation bool) error {
 	if body.ID.TxDigest == nil {
 		return errors.New("Missing TxDigest field")
 	}
@@ -261,6 +285,12 @@ func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult, isReobservatio
 		return err
 	}
 
+	// Check if we need to delay the transfer in question
+	delayReason := common.NoDelay
+	if shouldDelay {
+		delayReason = common.TxVerifierDelay
+	}
+
 	observation := &common.MessagePublication{
 		TxID:             txHashEthFormat.Bytes(),
 		Timestamp:        time.Unix(ts, 0),
@@ -271,6 +301,7 @@ func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult, isReobservatio
 		Payload:          fields.Payload,
 		ConsistencyLevel: *fields.ConsistencyLevel,
 		IsReobservation:  isReobservation,
+		DelayReason:      delayReason,
 	}
 
 	suiMessagesConfirmed.Inc()
@@ -330,7 +361,8 @@ func (e *Watcher) Run(ctx context.Context) error {
 				return ctx.Err()
 
 			default:
-				dataWithEvents, err := e.getEvents()
+				dataWithEvents, err := e.getEvents(logger)
+
 				if err != nil {
 					logger.Error("sui_data_pump Error", zap.Error(err))
 					continue
@@ -339,7 +371,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 				if len(dataWithEvents) > 0 {
 					for idx := len(dataWithEvents) - 1; idx >= 0; idx-- {
 						event := dataWithEvents[idx]
-						err = e.inspectBody(logger, event.result, false)
+						err = e.inspectBody(logger, event.result, event.shouldDelay, false)
 						if err != nil {
 							logger.Error("inspectBody Error", zap.Error(err))
 							continue
@@ -428,8 +460,17 @@ func (e *Watcher) Run(ctx context.Context) error {
 
 				}
 
+				suiApiConnection := txverifier.NewSuiApiConnection(e.suiRPC)
+
 				for i, chunk := range res.Result {
-					err := e.inspectBody(logger, chunk, true)
+					delayTx := false
+					// TODO: Reuse an existing RPC call if possible, this isn't very efficient
+					_, err = e.txVerifier.ProcessDigest(*chunk.ID.TxDigest, suiApiConnection, logger)
+
+					if err != nil {
+						delayTx = true
+					}
+					err := e.inspectBody(logger, chunk, delayTx, true)
 					if err != nil {
 						logger.Info("sui_fetch_obvs_req skipping event data in result", zap.String("txhash", tx58), zap.Int("index", i), zap.Error(err))
 					}
@@ -446,7 +487,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 	}
 }
 
-func (w *Watcher) getEvents() ([]SuiResultInfo, error) {
+func (w *Watcher) getEvents(logger *zap.Logger) ([]SuiResultInfo, error) {
 	// Only get events newer than the last processed height
 	var retVal []SuiResultInfo
 	var results []SuiResult
@@ -501,7 +542,18 @@ func (w *Watcher) getEvents() ([]SuiResultInfo, error) {
 	if (len(mbRes) == 0) || (len(mbRes) != len(txs)) {
 		return retVal, errors.New("getEvents error getting multiple blocks")
 	}
+	suiApiConnection := txverifier.NewSuiApiConnection(w.suiRPC)
+
 	for idx, block := range mbRes {
+		delayTx := false
+		// TODO: Calling this here isn't very efficient, we should be able to reuse some of the existing calls
+		if w.txVerifierEnabled {
+			_, err = w.txVerifier.ProcessDigest(txs[idx], suiApiConnection, logger)
+
+			if err != nil {
+				delayTx = true
+			}
+		}
 		cp, err := strconv.ParseInt(block.Checkpoint, 10, 64)
 		if err != nil {
 			return retVal, fmt.Errorf("getEvents failed to ParseInt: %w", err)
@@ -511,7 +563,7 @@ func (w *Watcher) getEvents() ([]SuiResultInfo, error) {
 			if txs[idx] != block.Digest {
 				return retVal, fmt.Errorf("getEvents digest mismatch: [%s] [%s]", txs[idx], block.Digest)
 			}
-			sri := SuiResultInfo{result: results[idx], checkpoint: cp}
+			sri := SuiResultInfo{result: results[idx], checkpoint: cp, shouldDelay: delayTx}
 			retVal = append(retVal, sri)
 		} else {
 			// We can break here because the blocks are in order.

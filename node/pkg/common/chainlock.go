@@ -18,6 +18,13 @@ import (
 const HashLength = 32
 const AddressLength = 32
 
+type DelayReasonEnum uint8
+
+const (
+	NoDelay DelayReasonEnum = iota
+	TxVerifierDelay
+)
+
 type MessagePublication struct {
 	TxID      []byte
 	Timestamp time.Time
@@ -33,6 +40,9 @@ type MessagePublication struct {
 	// Unreliable indicates if this message can be reobserved. If a message is considered unreliable it cannot be
 	// reobserved.
 	Unreliable bool
+
+	// Should this message publication be delayed
+	DelayReason DelayReasonEnum
 }
 
 func (msg *MessagePublication) TxIDString() string {

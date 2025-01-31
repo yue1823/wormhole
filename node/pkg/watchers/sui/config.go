@@ -15,6 +15,7 @@ type WatcherConfig struct {
 	ChainID          vaa.ChainID        // ChainID
 	Rpc              string
 	SuiMoveEventType string
+	TxVerifier       bool
 }
 
 func (wc *WatcherConfig) GetNetworkID() watchers.NetworkID {
@@ -43,5 +44,5 @@ func (wc *WatcherConfig) Create(
 ) (interfaces.L1Finalizer, supervisor.Runnable, error) {
 	var devMode bool = (env == common.UnsafeDevNet)
 
-	return nil, NewWatcher(wc.Rpc, wc.SuiMoveEventType, devMode, msgC, obsvReqC).Run, nil
+	return nil, NewWatcher(wc.Rpc, wc.SuiMoveEventType, devMode, msgC, obsvReqC, wc.TxVerifier).Run, nil
 }
