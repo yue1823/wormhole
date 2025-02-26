@@ -25,6 +25,9 @@ interface PricingWalletConfig {
   address: string;
 }
 
+// extended wait is required for some chains like Unichain.
+const WAIT_BLOCKS = 4;
+
 const processName = "configureDeliveryProviderPriceAssistant";
 init();
 const operatingChains = getOperatingChains();
@@ -88,8 +91,8 @@ async function updateDeliveryProviderConfiguration(config: Config, chain: ChainI
       chain
     );
   
-    await deliveryProvider.updatePricingWallet(update.address, overrides);
-    
+    const tx = await deliveryProvider.updatePricingWallet(update.address, overrides);
+    tx.wait(WAIT_BLOCKS); 
   
     let receipt;
     try {
@@ -97,7 +100,7 @@ async function updateDeliveryProviderConfiguration(config: Config, chain: ChainI
         update.address,
         overrides
       );
-      receipt = await tx.wait();
+      receipt = await tx.wait(WAIT_BLOCKS); 
     } catch (error) {
       console.log(
         `Updates failed on operating chain ${chain.chainId}. Error: ${error}`
