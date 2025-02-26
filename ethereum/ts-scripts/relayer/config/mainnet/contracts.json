@@ -380,6 +380,10 @@
     {
       "address": "0xa34FE08aD10C1B8420Af1c0d05eB258243039B73",
       "chainId": 45
+    },
+    {
+      "address": "0x1a8dD0FA61990Db5aef353DC122bc17Ac4F10358",
+      "chainId": 44
     }
   ],
   "create2Factories": [
