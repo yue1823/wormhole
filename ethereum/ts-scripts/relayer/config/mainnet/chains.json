@@ -1,13 +1,13 @@
 {
   "guardianSetIndex": 4,
-  "operatingChains": [44],
+  "operatingChains": [44], 
   "description": "This file contains the chains against which all the scripts should run.",
   "chains": [
     {
       "description": "Ethereum",
       "evmNetworkId": 1,
       "chainId": 2,
-      "rpc": "https://rpc.ankr.com/eth",
+      "rpc": "https://eth.llamarpc.com",
       "wormholeAddress": "0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B"
     },
     {
@@ -21,7 +21,7 @@
       "description": "Polygon",
       "evmNetworkId": 137,
       "chainId": 5,
-      "rpc": "https://rpc.ankr.com/polygon",
+      "rpc": "https://polygon-bor-rpc.publicnode.com",
       "wormholeAddress": "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7"
     },
     {
@@ -84,14 +84,14 @@
       "description": "Scroll",
       "evmNetworkId": 534352,
       "chainId": 34,
-      "rpc": "https://rpc.ankr.com/scroll",
+      "rpc": "https://rpc.scroll.io",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
       "description": "Mantle",
       "evmNetworkId": 5000,
       "chainId": 35,
-      "rpc": "https://mantle-mainnet.g.alchemy.com/v2/n7D3C5-Th1KJHZgdyI0hjJR2XWBMzD9L",
+      "rpc": "https://rpc.ankr.com/mantle",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
