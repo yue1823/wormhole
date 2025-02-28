@@ -6,7 +6,7 @@
       "description": "Ethereum",
       "evmNetworkId": 1,
       "chainId": 2,
-      "rpc": "https://rpc.ankr.com/eth",
+      "rpc": "https://eth.llamarpc.com",
       "wormholeAddress": "0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B"
     },
     {
@@ -20,7 +20,7 @@
       "description": "Polygon",
       "evmNetworkId": 137,
       "chainId": 5,
-      "rpc": "https://rpc.ankr.com/polygon",
+      "rpc": "https://polygon-bor-rpc.publicnode.com",
       "wormholeAddress": "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7"
     },
     {
@@ -41,7 +41,7 @@
       "description": "Klaytn",
       "evmNetworkId": 8217,
       "chainId": 13,
-      "rpc": "https://klaytn.blockpi.network/v1/rpc/public",
+      "rpc": "https://klaytn.api.onfinality.io/public",
       "wormholeAddress": "0x0C21603c4f3a6387e241c0091A7EA39E43E90bb7"
     },
     {
@@ -83,7 +83,7 @@
       "description": "Scroll",
       "evmNetworkId": 534352,
       "chainId": 34,
-      "rpc": "https://rpc.ankr.com/scroll",
+      "rpc": "https://rpc.scroll.io",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
@@ -108,11 +108,25 @@
       "wormholeAddress": "0x194B123c5E96B9b2E49763619985790Dc241CAC0"
     },
     {
+	    "description": "Linea",
+	    "evmNetworkId": 59144,
+	    "chainId": 38,
+	    "rpc": "https://rpc.linea.build",
+	    "wormholeAddress": "0x0C56aebD76E6D9e4a1Ec5e94F4162B4CBbf77b32"
+    },
+    {
       "description": "Snax",
       "evmNetworkId": 2192,
       "chainId": 43,
       "rpc": "https://mainnet.snaxchain.io",
       "wormholeAddress": "0xc1BA3CC4bFE724A08FbbFbF64F8db196738665f4"
+    },
+    {
+      "description": "Unichain",
+      "evmNetworkId": 130,
+      "chainId": 44,
+      "rpc": "https://unichain-rpc.publicnode.com",
+      "wormholeAddress": "0xCa1D5a146B03f6303baF59e5AD5615ae0b9d146D"
     },
     {
       "description": "Worldchain",
