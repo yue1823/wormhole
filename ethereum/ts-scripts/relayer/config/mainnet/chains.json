@@ -115,6 +115,13 @@
 	    "wormholeAddress": "0x0C56aebD76E6D9e4a1Ec5e94F4162B4CBbf77b32"
     },
     {
+      "description": "Berachain",
+      "evmNetworkId": 80094,
+      "chainId": 39,
+      "rpc": "https://rpc.berachain.com",
+      "wormholeAddress": "0xCa1D5a146B03f6303baF59e5AD5615ae0b9d146D"
+    },
+    {
       "description": "Snax",
       "evmNetworkId": 2192,
       "chainId": 43,
