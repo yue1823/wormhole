@@ -90,14 +90,14 @@
       "description": "Mantle",
       "evmNetworkId": 5000,
       "chainId": 35,
-      "rpc": "https://rpc.ankr.com/mantle",
+      "rpc": "https://1rpc.io/mantle",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
       "description": "Blast",
       "evmNetworkId": 81457,
       "chainId": 36,
-      "rpc": "https://rpc.ankr.com/blast",
+      "rpc": "https://rpc.blast.io",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
@@ -141,6 +141,13 @@
       "chainId": 45,
       "rpc": "https://worldchain-mainnet.g.alchemy.com/public",
       "wormholeAddress": "0xcbcEe4e081464A15d8Ad5f58BB493954421eB506"
+    },
+    {
+      "description": "Ink",
+      "evmNetworkId": 57073,
+      "chainId": 46,
+      "rpc": "https://rpc-qnd.inkonchain.com",
+      "wormholeAddress": "0xCa1D5a146B03f6303baF59e5AD5615ae0b9d146D"
     }
   ]
 }
