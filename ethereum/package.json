@@ -49,9 +49,12 @@
     "@wormhole-foundation/sdk": "^1.4.5",
     "cbor": "^9.0.2",
     "dotenv": "^10.0.0",
-    "elliptic": "^6.5.2",
+    "elliptic": "^6.6.1",
     "jsonfile": "^4.0.0",
     "truffle-hdwallet-provider-klaytn": "^1.4.2",
     "typechain": "^8.1.1"
+  },
+  "overrides": {
+    "elliptic": "^6.6.1"
   }
 }
