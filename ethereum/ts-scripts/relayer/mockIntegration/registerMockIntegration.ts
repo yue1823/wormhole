@@ -30,7 +30,7 @@ async function run() {
   for (const result of results) {
     if (result.status === "rejected") {
       console.log(
-        `Price update failed: ${result.reason?.stack || result.reason}`,
+        `Registration failed: ${result.reason?.stack || result.reason}`,
       );
     } else {
       printRegistration(result.value.updateEmitters, result.value.chain);
