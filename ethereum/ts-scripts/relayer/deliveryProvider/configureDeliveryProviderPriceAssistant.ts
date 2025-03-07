@@ -91,9 +91,6 @@ async function updateDeliveryProviderConfiguration(config: Config, chain: ChainI
       chain
     );
   
-    const tx = await deliveryProvider.updatePricingWallet(update.address, overrides);
-    tx.wait(WAIT_BLOCKS); 
-  
     let receipt;
     try {
       const tx = await deliveryProvider.updatePricingWallet(
@@ -103,14 +100,14 @@ async function updateDeliveryProviderConfiguration(config: Config, chain: ChainI
       receipt = await tx.wait(WAIT_BLOCKS); 
     } catch (error) {
       console.log(
-        `Updates failed on operating chain ${chain.chainId}. Error: ${error}`
+        `Update failed on operating chain ${chain.chainId}. Error: ${error}`
       );
       throw error;
     }
   
     if (receipt.status !== 1) {
-      const err = new Error(
-        `Updates failed on operating chain ${chain.chainId}. Tx id ${receipt.transactionHash}`
+      throw new Error(
+        `Update failed on operating chain ${chain.chainId}. Tx id ${receipt.transactionHash}`
       );
     } 
   }
