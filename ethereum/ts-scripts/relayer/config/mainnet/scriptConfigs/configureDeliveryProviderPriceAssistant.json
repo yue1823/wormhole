@@ -79,6 +79,10 @@
     {
       "chainId": 45,
       "address": "0xE8af07A8Eff87B99B7C8C2c18ea95a1FE86D0ACD"
+    },
+    {
+      "chainId": 46,
+      "address": "0xE8af07A8Eff87B99B7C8C2c18ea95a1FE86D0ACD"
     }
   ]
 }
