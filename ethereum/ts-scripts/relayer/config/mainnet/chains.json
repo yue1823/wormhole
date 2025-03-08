@@ -90,7 +90,7 @@
       "description": "Mantle",
       "evmNetworkId": 5000,
       "chainId": 35,
-      "rpc": "https://1rpc.io/mantle",
+      "rpc": "https://rpc.mantle.xyz",
       "wormholeAddress": "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
     },
     {
@@ -108,11 +108,11 @@
       "wormholeAddress": "0x194B123c5E96B9b2E49763619985790Dc241CAC0"
     },
     {
-	    "description": "Linea",
-	    "evmNetworkId": 59144,
-	    "chainId": 38,
-	    "rpc": "https://rpc.linea.build",
-	    "wormholeAddress": "0x0C56aebD76E6D9e4a1Ec5e94F4162B4CBbf77b32"
+      "description": "Linea",
+      "evmNetworkId": 59144,
+      "chainId": 38,
+      "rpc": "https://rpc.linea.build",
+      "wormholeAddress": "0x0C56aebD76E6D9e4a1Ec5e94F4162B4CBbf77b32"
     },
     {
       "description": "Berachain",
